@@ -2,7 +2,7 @@ class JobsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    @jobs = Job.all
+    @jobs = Job.all.where(is_hidden: false).recent
   end
 
   def show
@@ -46,6 +46,6 @@ class JobsController < ApplicationController
   private
 
   def job_params
-    params.require(:job).permit(:title, :description, :wage_lower_bound, :wage_upper_bound, :contact_email)
+    params.require(:job).permit(:title, :description, :wage_lower_bound, :wage_upper_bound, :contact_email, :is_hidden)
   end
 end
