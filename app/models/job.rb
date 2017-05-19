@@ -18,4 +18,5 @@ class Job < ApplicationRecord
     self.is_hidden = true
     self.save
   end
+
 end
