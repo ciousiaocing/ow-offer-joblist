@@ -1,5 +1,6 @@
 class JobsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :validate_search_key, only: [:search]
 
   def index
     @jobs = case params[:order]
@@ -73,15 +74,19 @@ class JobsController < ApplicationController
   def search
     if @query_string.present?
       search_result = Job.ransack(@search_criteria).result(:distinct => true)
-      @jobs = search_result.paginate(:page => params[:page], :per_page => 20 )
+      @jobs = search_result.recent.paginate(:page => params[:page], :per_page => 5 )
     end
   end
 
   protected
 
   def validate_search_key
-    @query_string = params[:q].gsub(/\\|\'|\/|\?/, "") if params[:q].present?
-    @search_criteria = search_criteria(@query_string)
+    @query_string = params[:q].gsub(/\\|\'|\/|\?/, "")
+    if params[:q].present?
+      @search_criteria = {
+        title_or_company_or_city_cont: @query_string
+      }
+    end
   end
 
   def search_criteria(query_string)
