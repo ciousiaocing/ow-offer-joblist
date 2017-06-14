@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :users
+  # devise_for :users
+  devise_for :users, :controllers => { registration: 'registrations' }
   resources :jobs do
     collection do
       get :search
@@ -10,7 +11,7 @@ Rails.application.routes.draw do
       get :legal
       get :non_profit
       get :human_resource
-      get :design 
+      get :design
     end
     resources :resumes
   end
