@@ -6,12 +6,15 @@ class Job < ApplicationRecord
   has_many :memebers, through: :job_relationships, source: :user
 
   validates :title, presence: true
+  validates :company, presence: true
   validates :wage_lower_bound, presence: true
   validates :wage_lower_bound, numericality: { greater_than: 0 }
   validates :wage_upper_bound, presence: true
 
   scope :recent, -> { order("created_at DESC")}
   scope :published, -> { where(is_hidden: false) }
+  scope :lower_salary, -> { order('wage_lower_bound DESC')}
+  scope :upper_salary, -> { order('wage_upper_bound DESC')}
 
   def publish!
     self.is_hidden = false
