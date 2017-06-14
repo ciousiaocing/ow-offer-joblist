@@ -21,7 +21,11 @@
         </li>
         <li>
           <div class="form-group form-inline search-bar">
-            <%= render :partial => "jobs/search_bar" %>
+            <% if !current_user %>
+              <%= link_to("", new_user_registration_path) %>
+            <% else %>
+              <%= render :partial => "jobs/search_bar" %>
+            <% end %>
           </div>
         </li>
       </ul>
