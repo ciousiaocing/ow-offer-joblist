@@ -1,5 +1,9 @@
 class Job < ApplicationRecord
   has_many :resumes
+  belongs_to :user
+
+  has_many :job_relationships
+  has_many :memebers, through: :job_relationships, source: :user
 
   validates :title, presence: true
   validates :wage_lower_bound, presence: true
