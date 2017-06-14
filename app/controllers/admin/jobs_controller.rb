@@ -4,7 +4,7 @@ class Admin::JobsController < ApplicationController
   layout "admin"
 
   def index
-    @jobs = Job.all.paginate(:page => params[:page], :per_page => 5)
+    @jobs = current_user.jobs.paginate(:page => params[:page], :per_page => 5)
   end
 
   def show
@@ -17,7 +17,7 @@ class Admin::JobsController < ApplicationController
 
   def create
     @job = Job.new(job_params)
-
+    @job.user = current_user
     if @job.save
       redirect_to admin_jobs_path
     else
